@@ -1,1 +1,1 @@
-web: gunicorn appsearcher_keywordfinder
+web: gunicorn appsearcher_keywordfinder --log-file -
