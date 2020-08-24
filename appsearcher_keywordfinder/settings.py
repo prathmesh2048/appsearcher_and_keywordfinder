@@ -25,7 +25,7 @@ SECRET_KEY = '@ji3emi5obzly6c_@_r6l#vy40s9(f=q4_6f-n1th3pe%p3969'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['http://127.0.0.1:8000/','https://searchapp-findkey.herokuapp.com/']
 
 
 # Application definition
