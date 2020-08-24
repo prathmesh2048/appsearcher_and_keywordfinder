@@ -1,0 +1,256 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <title></title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
+    <link rel="stylesheet" href=" {% static 'app_searcher/style.css'%}">
+  </head>
+  <body>
+
+<div class="col-md-8 offset-2 content">
+  <div class="sub">
+      <!-- selection section -->
+      <form >
+        <div class="form-group col-md-5 mx-auto offest-7">
+          <label for="inputoption">Store</label>
+          <select id="inputoption" class="form-control">
+            <option>Select your store..</option>
+            <option>Play store</option>
+            <option>App store</option>
+          </select>
+          <p></p>
+            <button type="button" onclick="getOption()" class="btn btn-primary ">submit</button>
+        </div>
+      </form>
+
+
+
+      <!-- for playstore -->
+      <div id="playstore">
+        <form method="POST"  id="play_store">
+          {% csrf_token %}
+          <div class="form-group col-md-5 mx-auto offest-7">
+            <p>Please enter a valid package name, for example-:</p>
+            <ul>
+              <li>com.appxplore.voidtroopers</li>
+              <li>com.cosmolab.srpg001</li>
+              <li>com.tamasenco.neonverse.invaders.shmup.attack</li>
+            </ul>
+            <label for="package_name">Package Name</label>
+            <input type="text" class="form-control" name="package_name" id="package_name">
+            <br>
+
+             <button type="submit" class="btn btn-success ">Get Info</button>
+          </div>
+        </form>
+
+
+      </div>
+
+      <!-- for app store -->
+      <div id="appstore">
+        <form id="app_store" method="post">
+          {% csrf_token %}
+          <div class="form-group col-md-5 mx-auto offest-7">
+            <p>Please enter te valid App Name and Application Id of the app
+            you are looking for.. </p>
+            <p>also <b>make sure that the app name is correct</b></p>
+            <p>for example -:</p>
+            <ul>
+              <li>app name = <i>Void Troopers : Sci-fi Tapper </i>and app id =<i> 1367822033</i></li>
+              <li>app name = <i>Rowan McPaddles</i> and app id = <i>1237067595</i></li>
+            </ul>
+            <label for="app_name">App Name</label>
+            <input type="text" class="form-control" name="app_name" id="app_name">
+            <label for="app_id">Application Id:</label>
+            <input type="text" class="form-control" name="app_id" id="app_id">
+            <br>
+            <button type="submit" class="btn btn-success ">Get Info</button>
+          </div>
+        </form>
+      </div>
+
+      <!-- Preloader -->
+      <div class="text-center" id="preloader" style="display:none;">
+        <div class="spinner-border" role="status">
+          <span class="sr-only">Loading...</span>
+        </div>
+      </div>
+
+      <!-- Preloader ends here ! -->
+
+
+      <div class="col-sm-7 mx-auto offest-5">
+
+        <!-- Card -->
+        <div class="card booking-card">
+
+          <!-- Card image -->
+          <div class="view overlay">
+            <img class="card-img-top" id = 'card-img' src="https://cmsphoto.ww-cdn.com/superstatic/41269/art/large_x2_16_9/5297951-7905525.jpg?v=1558361893" style="width:100%; height:50vh;" alt="Card image cap">
+            <a href="#!">
+              <div class="mask rgba-white-slight"></div>
+            </a>
+          </div>
+
+          <!-- Card content -->
+          <div class="card-body">
+
+            <!-- Title -->
+            <h4 class="card-title font-weight-bold" id="appname" >App Name</h4>
+            <!-- Data -->
+            <ul class="list-unstyled list-inline rating mb-0">
+
+              <li class="list-inline-item"><p id ='Rating' class="text-muted">Rating (--)</p></li>
+              <li class="list-inline-item"><p id ='Reviews' class="text-muted">Reviews (--)</p></li>
+              <li class="list-inline-item"><p id ='Downloads' class="text-muted">Downloads (--)</p></li>
+
+            </ul>
+            <p class="mb-2" id="devname">Developer's Name - (---)</p>
+            <!-- Text -->
+            <p class="card-text" id = 'DESCRIPTION'>DESCRIPTION-: ........</p>
+            <hr class="my-4">
+
+
+          </div>
+
+        </div>
+        <!-- Card -->
+
+      </div>
+
+
+
+
+  </div>
+</div>
+
+<script src="{% static 'app_searcher/index.js'%}" charset="utf-8"></script>
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js" integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN" crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js" integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8shuf57BaghqFfPlYxofvL8/KUEfYiJOMMV+rV" crossorigin="anonymous"></script>
+<script
+        src="https://code.jquery.com/jquery-3.5.0.min.js"
+        integrity="sha256-xNzN2a4ltkB44Mc/Jz3pT4iU1cmeR0FkXs4pru/JxaQ="
+        crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
+        integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo"
+        crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"
+        integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6"
+        crossorigin="anonymous"></script>
+
+<script type="text/javascript">
+    // using jQuery
+function getCookie(name) {
+    var cookieValue = null;
+    if (document.cookie && document.cookie != '') {
+        var cookies = document.cookie.split(';');
+        for (var i = 0; i < cookies.length; i++) {
+            var cookie = jQuery.trim(cookies[i]);
+            // Does this cookie string begin with the name we want?
+            if (cookie.substring(0, name.length + 1) == (name + '=')) {
+                cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                break;
+            }
+        }
+    }
+    return cookieValue;
+}
+var csrftoken = getCookie('csrftoken');
+function csrfSafeMethod(method) {
+    // these HTTP methods do not require CSRF protection
+    return (/^(GET|HEAD|OPTIONS|TRACE)$/.test(method));
+}
+$.ajaxSetup({
+    beforeSend: function(xhr, settings) {
+        if (!csrfSafeMethod(settings.type) && !this.crossDomain) {
+            xhr.setRequestHeader("X-CSRFToken", csrftoken);
+        }
+    }
+});
+
+
+
+ const form = document.getElementById('play_store');
+    form.addEventListener("submit", submitHandler);
+ const form1 = document.getElementById('app_store');
+    form1.addEventListener("submit", submitHandler);
+
+    function submitHandler(e) {
+       e.preventDefault(); // important !
+       document.getElementById('preloader').style.display = 'block'
+       $.ajax({
+       url: "{% url 'app_searcher:output' %}",
+       type: 'POST',
+       data:  {"data":$('#package_name').val(),
+                "data1": $('#app_name').val(),
+                "data2": $('#app_id').val()
+                },
+       dataType: "json",
+       success: success_handler
+       });
+
+    }
+
+
+
+
+
+    function success_handler(json){
+
+            if(json.play){
+              document.getElementById('appname').innerHTML = json.app_name
+              document.getElementById('card-img').src = json.app_icon
+              document.getElementById('Rating').innerHTML = 'Rating ' + json.app_rating
+              document.getElementById('Reviews').innerHTML = 'Reviews ' + '(' + json.app_rating_figure + ')'
+              document.getElementById('Downloads').innerHTML = 'Downloads ' + '(' + json.app_downloaded_figure + ')'
+              document.getElementById('devname').innerHTML = "<strong>Developer's Name and Other Info -: </strong>" + json.app_developer_name
+
+              document.getElementById('DESCRIPTION').innerHTML = "<strong> Description -: </strong>" + json.app_description
+              document.querySelector('#DESCRIPTION').innerText = truncateText('#DESCRIPTION', 200)
+
+            }else if(json.store){
+              document.getElementById('appname').innerHTML = json.app_name
+              document.getElementById('card-img').src = json.app_icon
+              document.getElementById('Rating').innerHTML = 'Rating ' + json.app_rating
+              document.getElementById('Reviews').innerHTML = 'Reviews ' + '(' + json.app_rating_figure + ')'
+              document.getElementById('Downloads').innerHTML = 'Downloads ' + json.app_downloaded_figure
+              document.getElementById('devname').innerHTML = "<strong>Developer's Name and Other Info -: </strong>" + json.app_developer_name
+
+              document.getElementById('DESCRIPTION').innerHTML = "<strong> Description -: </strong>" + json.app_description
+              document.querySelector('#DESCRIPTION').innerText = truncateText('#DESCRIPTION', 200)
+
+            }
+            document.getElementById('package_name').value = '' // here ".value" is important ! , this piece of code clears the input text
+            document.getElementById('app_name').value = ''     // this piece of code clears the input text
+            document.getElementById('app_id').value = ''    // this piece of code clears the input text
+            document.getElementById('preloader').style.display = 'none'
+
+      }
+
+
+
+
+
+function truncateText(selector, maxLength) {
+    var element = document.querySelector(selector),
+        truncated = element.innerText;
+
+    if (truncated.length > maxLength) {
+        truncated = truncated.substr(0,maxLength) + '.....';
+    }
+    return truncated;
+}
+
+
+
+
+
+</script>
+
+</body>
+</html>
+

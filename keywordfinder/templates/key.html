@@ -1,0 +1,175 @@
+{% load crispy_forms_tags %}
+{% load static %}
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <link rel="stylesheet" href="{% static 'keyword_finder/key.css' %}">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
+    <title></title>
+  </head>
+  <body>
+      <section class=" heading text-center">
+          <h1>Keywords Finder</h1>
+          <div class="col-md-5 offset-7 mx-auto">
+           <h6>Enter The Website URL Here -:</h6>
+              <form method="post" id="form">
+                  {% csrf_token %}
+                  {{form|crispy}}
+                  <button type="submit" id= 'form-submit' class="btn btn-primary" name="button">Search</button>
+              </form>
+
+          </div>
+
+          <br>
+            <div class="col-md-5 offset-7 mx-auto">
+
+
+            </div>
+          </section>
+
+
+
+            <section>
+              <br>
+              <br>
+            <div class="col-md-5 offest-7 mx-auto">
+
+
+                 <!-- Preloader -->
+      <div class="text-center" id="preloader" style="display:none;">
+        <div class="spinner-border" role="status">
+          <span class="sr-only">Loading...</span>
+        </div>
+      </div>
+
+      <!-- Preloader ends here ! -->
+                <br>
+              <table class="table" id="location">
+                    <thead class="thead-dark">
+                      <tr>
+                        <th scope="col">Sr no.</th>
+                        <th scope="col">Keywords</th>
+
+
+                      </tr>
+                    </thead>
+                    <tbody id="table_body">
+
+                    </tbody>
+                    </table>
+                <br>
+
+
+
+                <table class="table">
+                    <thead class="thead-dark">
+                      <tr>
+                        <th scope="col">Recommanded Keywords for this URL</th>
+
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+
+                        <td>test</td>
+
+                      </tr>
+                      <tr>
+
+
+                        <td>test</td>
+
+                      </tr>
+                      <tr>
+
+                        <td> test</td>
+
+                      </tr>
+                    </tbody>
+                    </table>
+
+
+              </div>
+            </section>
+
+
+
+      <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js" integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN" crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js" integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8shuf57BaghqFfPlYxofvL8/KUEfYiJOMMV+rV" crossorigin="anonymous"></script>
+      <script
+        src="https://code.jquery.com/jquery-3.5.0.min.js"
+        integrity="sha256-xNzN2a4ltkB44Mc/Jz3pT4iU1cmeR0FkXs4pru/JxaQ="
+        crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
+        integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo"
+        crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"
+        integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6"
+        crossorigin="anonymous"></script>
+<script type="text/javascript">
+    // using jQuery
+function getCookie(name) {
+    var cookieValue = null;
+    if (document.cookie && document.cookie != '') {
+        var cookies = document.cookie.split(';');
+        for (var i = 0; i < cookies.length; i++) {
+            var cookie = jQuery.trim(cookies[i]);
+            // Does this cookie string begin with the name we want?
+            if (cookie.substring(0, name.length + 1) == (name + '=')) {
+                cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                break;
+            }
+        }
+    }
+    return cookieValue;
+}
+var csrftoken = getCookie('csrftoken');
+function csrfSafeMethod(method) {
+    // these HTTP methods do not require CSRF protection
+    return (/^(GET|HEAD|OPTIONS|TRACE)$/.test(method));
+}
+$.ajaxSetup({
+    beforeSend: function(xhr, settings) {
+        if (!csrfSafeMethod(settings.type) && !this.crossDomain) {
+            xhr.setRequestHeader("X-CSRFToken", csrftoken);
+        }
+    }
+});
+
+
+
+$("form").on("submit", function( event ) {
+  document.getElementById('preloader').style.display = 'block'
+  document.getElementById('table_body').innerHTML = '';
+  event.preventDefault();
+  console.log( $( this ).serialize() );
+  var my_form = this;
+  $.ajax({
+     type: "POST",
+     url: '{% url 'keywordfinder:index' %}',
+     data: $( this ).serialize(),
+     success: successHandler,
+     complete: function() {
+        my_form.reset() // reset after submit
+     }
+  });
+})
+
+function successHandler(json){
+// alert(json.keywords)
+// alert(json.recommanded)
+document.getElementById('preloader').style.display = 'none'
+let myArray = json.keywords
+    for(let i = 0; i < myArray.length; i++){
+    console.log(myArray[i]);
+    document.getElementById('table_body').innerHTML += '<tr>' + '<th scope="row">' + (i+1) + '</th><td>' + myArray[i] + '</td></tr>'
+
+    }
+}
+
+</script>
+
+  </body>
+</html>
